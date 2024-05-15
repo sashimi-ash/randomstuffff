@@ -22,20 +22,15 @@ if CLIENT then
     Fli.Col        =   Color(100, 255, 100)
     Fli.Siz        =   0.08
     Fli.Rad        =   255
-    Fli.Count      =   25
+    Fli.Count      =   35
     Fli.Fullbright =   true
     Fli.SeekRand   =   0
 
-    -- Movement path setup.
+    -- We make fireflies!
     for xo = 1, Fli.Count do
 
         -- At first every position is initialized with a random one.
         Fli.Goals[xo] = OriPos + Vector(math.rand(-Fli.Rad, Fli.Rad), math.rand(-Fli.Rad, Fli.Rad), math.rand(Fli.Rad, Fli.Rad*2) / 1.5)
-    
-    end
-
-    -- We make fireflies!
-    for xo = 1, Fli.Count do
 
         -- But only if we can spawn any, that is!
         if not hologram.canSpawn then return end
@@ -92,7 +87,7 @@ if CLIENT then
     for xo = 1, Fli.Count do
 
         -- Randomize it alittle.
-        timer.create("Ash_Logi_Fireflies_ID_" .. xo, 0.3+math.rand(0.15,0.25), 0, function() Fli.Logic(xo) end)
+        timer.create("Ash_Logi_Fireflies_ID_" .. xo, 0.6+math.rand(0.35,0.75), 0, function() Fli.Logic(xo) end)
         timer.start("Ash_Logi_Fireflies_ID_" .. xo)
 
     end
