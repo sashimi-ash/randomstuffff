@@ -1,7 +1,7 @@
 --@name  Ash's Lovely Little Fireflies!
 --@author Zarashigal
 --@shared
---@model "models/bull/gates/capacitor_nano.mdl"
+--@model models/hunter/plates/plate.mdl
 
 -- This runs Clientside!
 if CLIENT then
@@ -20,14 +20,18 @@ if CLIENT then
 
     -- Configurayshunn.
     Fli.Col        =   Color(100, 255, 100)
-    Fli.Siz        =   0.1
-    Fli.Rad        =   200
-    Fli.Count      =   55
+    Fli.Siz        =   0.08
+    Fli.Rad        =   255
+    Fli.Count      =   25
     Fli.Fullbright =   true
-    
+    Fli.SeekRand   =   0
+
     -- Movement path setup.
     for xo = 1, Fli.Count do
-        Fli.Goals[xo] = OriPos
+
+        -- At first every position is initialized with a random one.
+        Fli.Goals[xo] = OriPos + Vector(math.rand(-Fli.Rad, Fli.Rad), math.rand(-Fli.Rad, Fli.Rad), math.rand(Fli.Rad, Fli.Rad*2) / 1.5
+    
     end
 
     -- We make fireflies!
@@ -38,7 +42,7 @@ if CLIENT then
 
         -- However, if we can spawn any, we...
         -- Insert the fly to the fly table, so we can do stuff with them.
-        table.insert(Fli.Flies, hologram.create(OriPos + Vector(math.rand(-Fli.Rad, Fli.Rad), math.rand(-Fli.Rad, Fli.Rad), math.rand(Fli.Rad, Fli.Rad*2) / 1.5), OriAng, "models/holograms/icosphere.mdl", Vector(1, 1, 1) * Fli.Siz))
+        table.insert(Fli.Flies, hologram.create(OriPos + Fli.Goals[xo], OriAng, "models/holograms/icosphere.mdl", Vector(1, 1, 1) * Fli.Siz))
 
         -- Set their color and make fullbright if wanted.
         Fli.Flies[xo]:setColor(Fli.Col)
@@ -47,7 +51,7 @@ if CLIENT then
     end
 
     -- We make the light source of the fireflies. xD
-    Fli.LightSource = light.create(OriPos, 100*Fli.Rad/2, 0.001, Fli.Col)
+    Fli.LightSource = light.create(OriPos, 100*Fli.Rad/4, .00000001, Fli.Col)
 
     -- Visual FX!
     function Fli.VFX()
@@ -58,42 +62,46 @@ if CLIENT then
     end
 
     -- Movement logic for our fireflies.
-    function Fli.Logic()
+    function Fli.Logic(xo)
 
-        -- Select random goal for the fireflies to fly towards.
-        for xo = 1, Fli.Count do
-
+            -- Select random goal for the fireflies to fly towards.
             -- We do dat and store them in a tabley. :3
             Fli.Goals[xo] = OriPos + Vector(math.rand(-Fli.Rad, Fli.Rad), math.rand(-Fli.Rad, Fli.Rad), math.rand(-Fli.Rad, Fli.Rad*2) / 1.5)
-
-        end
 
     end
 
     -- The movement itself.
     function Fli.Movement()
+        -- Get time for blinking!
+        local curtime = timer.curtime()
 
         -- Animate every lovely little firefly!
         for xo = 1, Fli.Count do
 
                 -- Fly to movement goal.
-                Fli.Flies[xo]:setPos(math.lerpVector(0.98, Fli.Goals[xo], Fli.Flies[xo]:getPos()))
-                Fli.Flies[xo]:setColor(Fli.Col * math.rand(0, 1))
+                Fli.Flies[xo]:setPos(math.lerpVector(0.95, Fli.Goals[xo], Fli.Flies[xo]:getPos()))
+
+                -- Scale flicker. Gives it more liveliness! uwu
+                Fli.Flies[xo]:setScale(Vector(Fli.Siz * math.max(math.sin(curtime * (3+xo*0.1)), 0.25)))
 
         end
 
     end
     
     -- Movement logic.
-    timer.create("Ash_Logi_Fireflies", 1, 0, Fli.Logic)
-    timer.start("Ash_Logi_Fireflies")
+    for xo = 1, Fli.Count do
+
+        -- Randomize it alittle.
+        timer.create("Ash_Logi_Fireflies_ID_" .. xo, 0.3+math.rand(0.15,0.25), 0, function() Fli.Logic(xo) end)
+        timer.start("Ash_Logi_Fireflies_ID_" .. xo)
+
+    end
 
     -- Movement anims.
-    timer.create("Ash_Move_Fireflies", 0.035, 0, Fli.Movement)
+    timer.create("Ash_Move_Fireflies", 0.05, 0, Fli.Movement)
     timer.start("Ash_Move_Fireflies")
     
     -- VFX
-    timer.create("Ash_VFX_Fireflies", 0.5, 0, Fli.VFX)
-    timer.start("Ash_VFX_Fireflies")
+    hook.add("think", "Ash_VFX_Fireflies", Fli.VFX)
 
 end
