@@ -30,7 +30,7 @@ if CLIENT then
     for xo = 1, Fli.Count do
 
         -- At first every position is initialized with a random one.
-        Fli.Goals[xo] = OriPos + Vector(math.rand(-Fli.Rad, Fli.Rad), math.rand(-Fli.Rad, Fli.Rad), math.rand(Fli.Rad, Fli.Rad*2) / 1.5
+        Fli.Goals[xo] = OriPos + Vector(math.rand(-Fli.Rad, Fli.Rad), math.rand(-Fli.Rad, Fli.Rad), math.rand(Fli.Rad, Fli.Rad*2) / 1.5)
     
     end
 
