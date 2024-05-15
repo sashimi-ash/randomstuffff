@@ -42,7 +42,7 @@ if CLIENT then
 
         -- However, if we can spawn any, we...
         -- Insert the fly to the fly table, so we can do stuff with them.
-        table.insert(Fli.Flies, hologram.create(OriPos + Fli.Goals[xo], OriAng, "models/holograms/icosphere.mdl", Vector(1, 1, 1) * Fli.Siz))
+        table.insert(Fli.Flies, hologram.create(Fli.Goals[xo], OriAng, "models/holograms/icosphere.mdl", Vector(1, 1, 1) * Fli.Siz))
 
         -- Set their color and make fullbright if wanted.
         Fli.Flies[xo]:setColor(Fli.Col)
