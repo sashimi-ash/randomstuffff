@@ -1,17 +1,19 @@
 --@name Zarashigal's Go (An Ancient Board Game)
 --@author Zarashigal
 --@shared
---@model models/sprops/rectangles/size_84/rect_84x84x3.mdl
+--@model models/sprops/rectangles/size_6/rect_96x96x3.mdl
 
 -- Helpers!
 c = chip()
+c:setColor(Color(0,0,0,0))
 
 -- Initialisayshun
 Go = {}
 Go.Conf = {Rows = 9, Cols = 9, GridColor = Color(0, 0, 0)}
 
 -- Pieces
-Go.Pieces = {}
+Go.Pieces  = {}
+Go.Markers = {}
 
 -- Subtable for each player. TODO: Logic!
 Go.Pieces.Ply1 = {}
@@ -29,8 +31,8 @@ if SERVER then
     Ply2Col = White
     
     -- Get players.
-    Ply1 = find.playersByName("zara", false)[1]
-    Ply2 = find.playersByName("naki", false)[1]
+    Ply1 = find.playersByName("name1", false)[1]
+    Ply2 = find.playersByName("name2", false)[1]
     
     -- Init input.
     Ply1KeyTrigger = false
@@ -117,37 +119,50 @@ if SERVER then
             
             
             -- If no one looks at this, don't bother, save CPU ops!
-            if Ply1:getEyeTrace().HitPos:getDistance(c:getPos()) >= 55 and Ply2:getEyeTrace().HitPos:getDistance(c:getPos()) >= 55 then
+            if Ply1:getEyeTrace().HitPos:getDistance(c:getPos()) >= 60 and Ply2:getEyeTrace().HitPos:getDistance(c:getPos()) >= 60 then
                 return
             end
             
             -- Selector Player 1
             if Ply1:getEyeTrace().HitPos:getDistance(Go.Intersections[i]:getPos()) < 5 then
-               
+                
                 -- Placement for Player 1!
                 if Ply1KeyTrigger then
-
-                    table.insert(Go.Pieces.Ply1,  hologram.create(
-                
-                        -- Position
-                        Go.Intersections[i]:localToWorld(Vector(0, 0, 3)),
-                        
-                        -- Ang
-                        Go.Intersections[i]:getAngles(),
-                        
-                        -- Model
-                        "models/sprops/geometry/sphere_6.mdl",
-                        
-                        -- Size
-                        Vector(1)
                     
-                    ))
+                    -- Remove if there's one already.
+                    if isValid(Go.Markers[tostring(Go.Intersections[i])]) then
+                        
+                        Go.Markers[tostring(Go.Intersections[i])]:remove()
+                        
+                    -- Otherwise we place one!    
+                    else
                     
-                    -- Color Player 2 Piece
-                    Go.Pieces.Ply1[#Go.Pieces.Ply1]:setMaterial(Ply1Col)
+                        table.insert(Go.Pieces.Ply1,  hologram.create(
                     
-                    -- Parent to the board, so we can pick it up!
-                    Go.Pieces.Ply1[#Go.Pieces.Ply1]:setParent(c)
+                            -- Position
+                            Go.Intersections[i]:localToWorld(Vector(0, 0, 3)),
+                            
+                            -- Ang
+                            Go.Intersections[i]:getAngles(),
+                            
+                            -- Model
+                            "models/sprops/geometry/sphere_6.mdl",
+                            
+                            -- Size
+                            Vector(1)
+                        
+                        ))
+                        
+                        -- Color Player 2 Piece
+                        Go.Pieces.Ply1[#Go.Pieces.Ply1]:setMaterial(Ply1Col)
+                        
+                        -- Parent to the board, so we can pick it up!
+                        Go.Pieces.Ply1[#Go.Pieces.Ply1]:setParent(c)
+                        
+                        -- Log marker into table!
+                        Go.Markers[tostring(Go.Intersections[i])] = Go.Pieces.Ply1[#Go.Pieces.Ply1]
+                        
+                    end
                     
                     -- Prevent spam...
                     Ply1KeyTrigger = false
@@ -158,34 +173,47 @@ if SERVER then
                 end
                 
             end
-        
+            
             -- Selector Player 2
             if Ply2:getEyeTrace().HitPos:getDistance(Go.Intersections[i]:getPos()) < 5 then
                 
                 -- Placement for Player 2!
                 if Ply2KeyTrigger then
-
-                    table.insert(Go.Pieces.Ply2,  hologram.create(
-                
-                        -- Position
-                        Go.Intersections[i]:localToWorld(Vector(0, 0, 3)),
-                        
-                        -- Ang
-                        Go.Intersections[i]:getAngles(),
-                        
-                        -- Model
-                        "models/sprops/geometry/sphere_6.mdl",
-                        
-                        -- Size
-                        Vector(1)
                     
-                    ))
+                    -- Remove if there's one already.
+                    if isValid(Go.Markers[tostring(Go.Intersections[i])]) then
+                        
+                        Go.Markers[tostring(Go.Intersections[i])]:remove()
+                        
+                    -- Otherwise we place one!    
+                    else
                     
-                    -- Color Player 2 Piece
-                    Go.Pieces.Ply2[#Go.Pieces.Ply2]:setMaterial(Ply2Col)
+                        table.insert(Go.Pieces.Ply2,  hologram.create(
                     
-                    -- Parent to the board, so we can pick it up!
-                    Go.Pieces.Ply2[#Go.Pieces.Ply2]:setParent(c)
+                            -- Position
+                            Go.Intersections[i]:localToWorld(Vector(0, 0, 3)),
+                            
+                            -- Ang
+                            Go.Intersections[i]:getAngles(),
+                            
+                            -- Model
+                            "models/sprops/geometry/sphere_6.mdl",
+                            
+                            -- Size
+                            Vector(1)
+                        
+                        ))
+                        
+                        -- Color Player 2 Piece
+                        Go.Pieces.Ply2[#Go.Pieces.Ply2]:setMaterial(Ply2Col)
+                        
+                        -- Parent to the board, so we can pick it up!
+                        Go.Pieces.Ply2[#Go.Pieces.Ply2]:setParent(c)
+                        
+                        -- Log marker into table
+                        Go.Markers[tostring(Go.Intersections[i])] = Go.Pieces.Ply2[#Go.Pieces.Ply2]
+                        
+                    end
                     
                     -- Prevent spam...
                     Ply2KeyTrigger = false
