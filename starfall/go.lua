@@ -29,8 +29,8 @@ if SERVER then
     Ply2Col = White
     
     -- Get players.
-    Ply1 = find.playersByName("t", false)[1]
-    Ply2 = find.playersByName("t", false)[1]
+    Ply1 = find.playersByName("zara", false)[1]
+    Ply2 = find.playersByName("naki", false)[1]
     
     -- Init input.
     Ply1KeyTrigger = false
@@ -46,62 +46,49 @@ if SERVER then
     Go.Cols = {}
     Go.Intersections = {}
     
-    -- Create Rows!
+    -- Grid generation!
     for i=1, Go.Conf.Rows do
         
-        -- Messy, but it works.
+        -- Rows! Messy, but it works.
         Go.Rows[i] = hologram.create(
-        c:localToWorld(Vector(-c:getModelBounds()[1]*12, 0, 0) + Vector(-(i-1)*10.5, 0, 0)), 
-        c:getAngles(), 
-        "models/sprops/rectangles/size_5/rect_48x48x3.mdl", 
-        Vector(0.01, 2, 2.1))
+            c:localToWorld(Vector(-c:getModelBounds()[1]*12, 0, 0) + Vector(-(i-1)*10.5, 0, 0)), 
+            c:getAngles(), 
+            "models/sprops/rectangles/size_5/rect_48x48x3.mdl", 
+            Vector(0.01, 2, 2.1)
+        )  
     
-    end
-    
-    -- Create Columns!
-    for i=1, Go.Conf.Cols do
-        
-        -- Messy, but it works.
+        -- Columns! Messy, but it works.
         Go.Cols[i] = hologram.create(
-        c:localToWorld(Vector(0, -c:getModelBounds()[2]*12, 0) + Vector(0, -(i-1)*10.5, 0)), 
-        c:getAngles(), 
-        "models/sprops/rectangles/size_5/rect_48x48x3.mdl", 
-        Vector(2, 0.01, 2.1))
-        
-        -- ALSO paint our columns and rows in one "go" badum tss.
-        Go.Rows[i]:setColor(Go.Conf.GridColor)
-        Go.Cols[i]:setColor(Go.Conf.GridColor)
-        Go.Rows[i]:setMaterial("models/debug/debugwhite")
-        Go.Cols[i]:setMaterial("models/debug/debugwhite")
-        
-        -- Parent to the board so we can pick it up!
-        Go.Rows[i]:setParent(c)
-        Go.Cols[i]:setParent(c)
-        
-    end
-    
-    -- Now we make the intersections.
-    for i=1, Go.Conf.Rows do
-        
-        for x=1, Go.Conf.Cols do
+            c:localToWorld(Vector(0, -c:getModelBounds()[2]*12, 0) + Vector(0, -(i-1)*10.5, 0)), 
+            c:getAngles(), 
+            "models/sprops/rectangles/size_5/rect_48x48x3.mdl", 
+            Vector(2, 0.01, 2.1)
+        )
             
+        -- Intersections.     
+        for x=1, Go.Conf.Rows do
+            
+
             -- Make point in the intersection.
             table.insert(Go.Intersections, hologram.create(
-                
-                -- Position
                 c:localToWorld(Vector(-c:getModelBounds()[1]*12, -c:getModelBounds()[2]*12, 0) + Vector(-(i-1)*10.5, -(x-1)*10.5, 0)),
-                
-                -- Ang
                 c:getAngles(),
-                
-                -- Model
                 "models/sprops/geometry/sphere_3.mdl",
-                
-                -- Size
                 Vector(2, 2, 2.25)
                 
             ))
-    
+            
+                        
+            -- ALSO paint our columns and rows in one "go" badum tss.
+            Go.Rows[i]:setColor(Go.Conf.GridColor)
+            Go.Cols[i]:setColor(Go.Conf.GridColor)
+            Go.Rows[i]:setMaterial("models/debug/debugwhite")
+            Go.Cols[i]:setMaterial("models/debug/debugwhite")
+            
+            -- Parent to the board so we can pick it up!
+            Go.Rows[i]:setParent(c)
+            Go.Cols[i]:setParent(c)
+
         end
     
     end
