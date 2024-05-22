@@ -29,8 +29,8 @@ if SERVER then
     Ply2Col = White
     
     -- Get players.
-    Ply1 = find.playersByName("zara", false)[1]
-    Ply2 = find.playersByName("naki", false)[1]
+    Ply1 = find.playersByName("t", false)[1]
+    Ply2 = find.playersByName("t", false)[1]
     
     -- Init input.
     Ply1KeyTrigger = false
