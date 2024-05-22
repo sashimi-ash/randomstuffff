@@ -8,7 +8,15 @@ c = chip()
 
 -- Initialisayshun
 Go = {}
-Go.Conf = {Rows = 9, Cols = 9, GridColor = Color(0, 0, 0)}
+
+-- Configurayshun...
+Go.Conf = {
+    
+    Rows = 9, 
+    Cols = 9, 
+    GridColor = Color(0, 0, 0)
+    
+}
 
 -- Invisible chip. Easier to read!
 c:setColor(Color(0, 0, 0, 0))
@@ -23,6 +31,13 @@ Go.Pieces.Ply2 = {}
 
 -- Server stuffery!
 if SERVER then
+
+    ----------- IMPORTANT ----------------------
+    ----- CHANGE PLAYER NAMES HERE!!! ----------
+    Ply1 = find.playersByName("Name1Here", false)[1]
+    Ply2 = find.playersByName("Name2Here", false)[1]
+    --------------------------------------------
+    --------------------------------------------
     
     -- Color Naming for easy switchinggg!
     Black = "phoenix_storms/black_brushes"
@@ -31,13 +46,6 @@ if SERVER then
     -- Switch around as wished!
     Ply1Col = Black
     Ply2Col = White
-
-    ----------- IMPORTANT ----------------------
-    ----- CHANGE PLAYER NAMES HERE!!! ----------
-    Ply1 = find.playersByName("Name1Here", false)[1]
-    Ply2 = find.playersByName("Name2Here", false)[1]
-    --------------------------------------------
-    --------------------------------------------
     
     -- Init input.
     Ply1KeyTrigger = false
