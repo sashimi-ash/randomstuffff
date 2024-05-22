@@ -5,11 +5,13 @@
 
 -- Helpers!
 c = chip()
-c:setColor(Color(0,0,0,0))
 
 -- Initialisayshun
 Go = {}
 Go.Conf = {Rows = 9, Cols = 9, GridColor = Color(0, 0, 0)}
+
+-- Invisible chip. Easier to read!
+c:setColor(Color(0,0,0,0))
 
 -- Pieces
 Go.Pieces  = {}
