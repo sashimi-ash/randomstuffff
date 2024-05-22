@@ -14,7 +14,9 @@ Go.Conf = {
     
     Rows = 9, 
     Cols = 9, 
-    GridColor = Color(0, 0, 0)
+    GridColor = Color(0, 0, 0),
+    PlaceSnd = "player/footsteps/woodpanel2.wav",
+    TakeSnd = "physics/plaster/ceiling_tile_impact_soft3.wav"
     
 }
 
@@ -34,8 +36,8 @@ if SERVER then
 
     ----------- IMPORTANT ----------------------
     ----- CHANGE PLAYER NAMES HERE!!! ----------
-    Ply1 = find.playersByName("Name1Here", false)[1]
-    Ply2 = find.playersByName("Name2Here", false)[1]
+    Ply1 = find.playersByName("NAME1", false)[1]
+    Ply2 = find.playersByName("NAME2", false)[1]
     --------------------------------------------
     --------------------------------------------
     
@@ -145,10 +147,17 @@ if SERVER then
                     -- Remove if there's one already.
                     if isValid(Go.Markers[tostring(Go.Intersections[i])]) then
                         
+                        -- Remove.
                         Go.Markers[tostring(Go.Intersections[i])]:remove()
+                        
+                        -- Sound.
+                        Go.Intersections[i]:emitSound(Go.Conf.TakeSnd)
                         
                     -- Otherwise we place one!    
                     else
+
+                        -- Sound.
+                        Go.Intersections[i]:emitSound(Go.Conf.PlaceSnd)
                     
                         table.insert(Go.Pieces.Ply1,  hologram.create(
                     
@@ -180,9 +189,6 @@ if SERVER then
                     -- Prevent spam...
                     Ply1KeyTrigger = false
                     
-                    -- Sound.
-                    Go.Intersections[i]:emitSound("physics/plaster/ceiling_tile_step4.wav")
-                    
                 end
                 
             end
@@ -196,11 +202,18 @@ if SERVER then
                     -- Remove if there's one already.
                     if isValid(Go.Markers[tostring(Go.Intersections[i])]) then
                         
+                        -- Remove.
                         Go.Markers[tostring(Go.Intersections[i])]:remove()
+                        
+                        -- Sound.
+                        Go.Intersections[i]:emitSound(Go.Conf.TakeSnd)
                         
                     -- Otherwise we place one!    
                     else
-                    
+                        
+                        -- Sound.
+                        Go.Intersections[i]:emitSound(Go.Conf.PlaceSnd)
+                        
                         table.insert(Go.Pieces.Ply2,  hologram.create(
                     
                             -- Position
@@ -231,9 +244,6 @@ if SERVER then
                     -- Prevent spam...
                     Ply2KeyTrigger = false
                     
-                    -- Sound.
-                    Go.Intersections[i]:emitSound("physics/plaster/ceiling_tile_step4.wav")
-                    
                 end
                 
             end
@@ -241,8 +251,8 @@ if SERVER then
             if Ply1:getEyeTrace().HitPos:getDistance(Go.Intersections[i]:getPos()) < 5 or Ply2:getEyeTrace().HitPos:getDistance(Go.Intersections[i]:getPos()) < 5 then
                 
                 -- Selection indicator!
-                Go.Intersections[i]:setColor(Color(255, 111, 111, 155))
-                Go.Intersections[i]:setScale(Vector(2, 2, 2.25)*1.25)
+                Go.Intersections[i]:setColor(Color(255, 250, 11, 75 + math.sin(timer.systime()*7) * 75))
+                Go.Intersections[i]:setScale(Vector(2, 2, 2)*1.6)
                 
             end
             
