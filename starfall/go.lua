@@ -31,10 +31,13 @@ if SERVER then
     -- Switch around as wished!
     Ply1Col = Black
     Ply2Col = White
-    
-    -- Get players.
-    Ply1 = find.playersByName("ara", false)[1]
-    Ply2 = find.playersByName("bjoer", false)[1]
+
+    ----------- IMPORTANT ----------------------
+    ----- CHANGE PLAYER NAMES HERE!!! ----------
+    Ply1 = find.playersByName("Name1Here", false)[1]
+    Ply2 = find.playersByName("Name2Here", false)[1]
+    --------------------------------------------
+    --------------------------------------------
     
     -- Init input.
     Ply1KeyTrigger = false
