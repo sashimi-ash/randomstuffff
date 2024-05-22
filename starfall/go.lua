@@ -11,7 +11,7 @@ Go = {}
 Go.Conf = {Rows = 9, Cols = 9, GridColor = Color(0, 0, 0)}
 
 -- Invisible chip. Easier to read!
-c:setColor(Color(0,0,0,0))
+c:setColor(Color(0, 0, 0, 0))
 
 -- Pieces
 Go.Pieces  = {}
@@ -33,8 +33,8 @@ if SERVER then
     Ply2Col = White
     
     -- Get players.
-    Ply1 = find.playersByName("name1", false)[1]
-    Ply2 = find.playersByName("name2", false)[1]
+    Ply1 = find.playersByName("ara", false)[1]
+    Ply2 = find.playersByName("bjoer", false)[1]
     
     -- Init input.
     Ply1KeyTrigger = false
